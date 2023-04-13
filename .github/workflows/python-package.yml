@@ -37,7 +37,7 @@ jobs:
       - name: push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT_TOKEN }}
           branch: main 
 
       - name: Run calculation script
@@ -48,7 +48,7 @@ jobs:
           echo "::set-output name=price_change::$(echo $output | cut -d',' -f2)"
 
       - name: Send email notification
-        if: ${{ steps.script.outputs.condition == 'yes' }}
+        if: ${{ steps.script.outputs.price_change >= 10  }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
