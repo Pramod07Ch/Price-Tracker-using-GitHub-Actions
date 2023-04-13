@@ -1,0 +1,60 @@
+name: Scrape job from flipkart
+
+on:
+  schedule:
+    - cron: "*/29 * * * *" 
+  workflow_dispatch:
+
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+jobs:
+  scrape-latest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2.0.0
+        with:
+          python-version: '3.9'
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Run scraping script
+        run: python log_info.py
+
+      - name: commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff-index --quiet HEAD || (git commit -a -m "updated log_file with price info" --allow-empty)
+          
+      - name: push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main 
+
+      - name: Run calculation script
+        id: script
+        run: |
+          output=$(python load_compare_price.py)
+          echo "::set-output name=price_diff::$(echo $output | cut -d',' -f1)"
+          echo "::set-output name=price_change::$(echo $output | cut -d',' -f2)"
+
+      - name: Send email notification
+        if: ${{ steps.script.outputs.condition == 'yes' }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: 'Tracking product update: price variation'
+          to: tinkuz.p23@gmail.com
+          body: 'The product price is dropped...............\n has difference of: ${{ steps.script.outputs.price_diff }}, \n in %:  is ${{ steps.script.outputs.price_change }}'
