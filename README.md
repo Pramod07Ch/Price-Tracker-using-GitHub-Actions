@@ -1,7 +1,6 @@
 # Price-tracking-with-GitHub-Actions
 
-<img src="https://i.ytimg.com/vi/0tMkRSdp-Go/maxresdefault.jpg" width="400">
-<img src="https://repository-images.githubusercontent.com/389757338/cb69b2b7-79ee-4af5-a2da-14b51411431a" width="400">
+<img src="project_idea.PNG" width="600" height="300">
 
 This repository contains a Python script that scrapes price information from the **Flipkart** website at regular time intervals using **cron job**, compares it to previous prices, and sends an email notification if there has been a significant change.
 
@@ -20,9 +19,9 @@ pip install -r requirements.txt
 ````
 
 ## Usage
-To use the scraper, you'll need to provide a URL for the product you want to track. You can do this by modifying the ***PRODUCT_URL*** variable in scrape_extract_and_compare.py to point to the correct URL.
+To use the scraper, you'll need to provide a URL for the product you want to track. You can do this by modifying the ***URL*** variable in [log_info.py](https://github.com/Pramod07Ch/price-tracker/blob/main/log_info.py) to point to the correct URL.
 
-You can also set a threshold for the percentage change in price that will trigger an email notification. By default, this threshold is set to 10%. You can modify this by changing the ***PRICE_THRESHOLD*** variable in [scrape_extract_and_compare.py](https://github.com/Pramod07Ch/price-tracking-with-GitHub-Actions/blob/main/scrape_extract_and_compare.py).
+You can also set a threshold for the percentage change in price that will trigger an email notification. By default, this threshold is set to 10%. You can modify this by changing the ***PRICE_THRESHOLD*** variable in [load_compare_price.py](https://github.com/Pramod07Ch/price-tracker/blob/main/log_compare_price.py).
 
 Once you've configured the script, you can run it by running:
 ```
