@@ -25,10 +25,17 @@ You can also set a threshold for the percentage change in price that will trigge
 
 Once you've configured the script, you can run it by running:
 ```
-python scrape_extract_and_compare.py
+python log_info.py
 ```
 
-The script will scrape the Flipkart website for price information, extract the relevant data, compare it to previous prices, and print out the price difference and percentage change. If the percentage change exceeds the threshold you set, it will also send an email notification to the address you specified.
+The script will scrape the Flipkart website for price information, extract the relevant data and log the details. 
+
+```
+python load_compare_price.py
+```
+
+
+To compare it to previous prices, another .py file is used to run. Then it will compare the prices and print out the price difference and percentage change. With github actions, if the percentage change exceeds the threshold you set, it will also send an email notification to the address you specified.
 
 ## GitHub Actions
 This repository also includes a GitHub Actions workflow that runs the scraper every specified time using **cron job** and sends an email notification if there has been a significant change in price. 
